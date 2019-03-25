@@ -1,7 +1,7 @@
 import boom from 'boom'
 import { format } from 'util'
-import { NextFunction, RequestHandler, Request, Response } from 'express'
 import { OneOrMore, Assured } from './structures/types'
+import { NextFunction, RequestHandler, Request, Response } from 'express'
 import { IAuthenticatedRequest } from './structures/interfaces/IAuthenticatedRequest'
 
 /**

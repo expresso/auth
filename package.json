@@ -52,5 +52,8 @@
   },
   "contributors": [
     "Rogério Munhoz <rogerio.j.munhoz@gmail.com>"
+  ],
+  "files": [
+    "dist"
   ]
 }

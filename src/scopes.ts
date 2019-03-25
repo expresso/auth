@@ -1,6 +1,6 @@
 import boom from 'boom'
 import { format } from 'util'
-import { NextFunction } from 'express'
+import { NextFunction, RequestHandler, Request, Response } from 'express'
 import { OneOrMore, Assured } from './structures/types'
 import { IAuthenticatedRequest } from './structures/interfaces/IAuthenticatedRequest'
 
@@ -33,17 +33,17 @@ function isPathInScope (path: string, scope: string[], { separator = '.', wildca
  * @param expected - Expected scopes
  * @param shouldHaveAllScopes - Indicates if all scopes should be met, or if only one is required
  */
-export function scopes (expected: OneOrMore<string>, shouldHaveAllScopes = true): Function {
+export function scopes (expected: OneOrMore<string>, shouldHaveAllScopes = true): RequestHandler {
   if (!Array.isArray(expected)) {
     return scopes(expected.split(' '))
   }
 
-  return (req: IAuthenticatedRequest, _res: Response, next: NextFunction) => {
-    if (!req.user || !Array.isArray(req.user.scopes)) {
+  return (req: Request, _res: Response, next: NextFunction) => {
+    if (!(req as IAuthenticatedRequest).user || !Array.isArray((req as unknown as Assured<IAuthenticatedRequest>).user.scopes)) {
       return next(boom.unauthorized('authorization token is missing or has an invalid scope grant'))
     }
 
-    const user = (req as Assured<IAuthenticatedRequest>).user
+    const user = (req as unknown as Assured<IAuthenticatedRequest>).user
 
     const satisfied = shouldHaveAllScopes // If user should have all scopes
       ? expected.every((scope) => isPathInScope(scope, user.scopes)) // Checks if every scope is in user scopes

@@ -87,6 +87,8 @@ export function factory (options: IAuthConfig) {
 }
 
 export default { factory, scopes, types }
+export * from './scopes'
+export * from './types'
 export * from './structures/interfaces/IAuthConfig'
 export * from './structures/interfaces/IJwtSafeRequest'
 export * from './structures/interfaces/IAuthenticatedRequest'

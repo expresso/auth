@@ -5,7 +5,6 @@ const jwksRsa = require('jwks-rsa')
 import expressJwt from 'express-jwt'
 import { Request, Response, NextFunction } from 'express'
 import { IAuthConfig } from './structures/interfaces/IAuthConfig'
-import { IJwtSafeRequest } from './structures/interfaces/IJwtSafeRequest'
 
 /**
  * Checks options to see if a simple JWT secret, or a JWKS URL should be used to validate token signatures
@@ -46,8 +45,8 @@ export function factory (options: IAuthConfig) {
     /**
      * Moes
      */
-    (req: IJwtSafeRequest, _res: Response, next: NextFunction) => {
-      const { scope, sub } = { ...req.user }
+    (req: Request, _res: Response, next: NextFunction) => {
+      const { scope = '', sub = '' } = { ...(req as any).user }
 
       if (!/urn:(user|sa):([a-f\d]{24})/i.test(sub)) {
         return next(boom.unauthorized('an unacceptable identity urn was given', undefined, { code: 'invalid_identity_urn' }))
@@ -90,5 +89,4 @@ export default { factory, scopes, types }
 export * from './scopes'
 export * from './types'
 export * from './structures/interfaces/IAuthConfig'
-export * from './structures/interfaces/IJwtSafeRequest'
 export * from './structures/interfaces/IAuthenticatedRequest'

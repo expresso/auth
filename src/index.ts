@@ -6,6 +6,8 @@ import expressJwt from 'express-jwt'
 import { Request, Response, NextFunction } from 'express'
 import { IAuthConfig } from './structures/interfaces/IAuthConfig'
 
+export const URN_REGEX = /urn:([a-zA-Z]+):([a-f\d]{24})/i
+
 /**
  * Checks options to see if a simple JWT secret, or a JWKS URL should be used to validate token signatures
  * @param options - Expresso auth options
@@ -48,14 +50,14 @@ export function factory (options: IAuthConfig) {
     (req: Request, _res: Response, next: NextFunction) => {
       const { scope = '', sub = '' } = { ...(req as any).user }
 
-      if (!/urn:(user|sa):([a-f\d]{24})/i.test(sub)) {
+      if (!URN_REGEX.test(sub)) {
         return next(boom.unauthorized('an unacceptable identity urn was given', undefined, { code: 'invalid_identity_urn' }))
       }
 
-      const urnRegex = /urn:([a-zA-Z]+):([a-f\d]{24})/i.exec(sub)
+      const urnParts = URN_REGEX.exec(sub)
 
-      const [ urn, type, id ] = urnRegex
-        ? urnRegex
+      const [ urn, type, id ] = urnParts
+        ? urnParts
         : [null, null, null]
 
       if (!urn || !type || !id) {

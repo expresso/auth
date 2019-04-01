@@ -10,6 +10,8 @@
     - [Options](#options)
     - [Scopes](#scopes)
       - [Conditionals](#conditionals)
+  - [URN[(#urn)
+    - [Types](#types)
 
 ## Basic Usage
 
@@ -31,7 +33,7 @@ interface IAppConfig extends IAuthConfig, IExpressoConfigOptions {}
 const appFactory = expresso((app, config: IAppConfig, environment) => {
   const { jwt, scope, types } = auth.factory(config)
 
-  app.get('/', jwt, scopes('namespace:your-scope'), routeHandler)
+  app.get('/', jwt, types('client'), scopes('namespace:your-scope'), routeHandler)
 })
 
 const options = {
@@ -46,6 +48,14 @@ const options = {
 
 server.start(appFactory, options)
 ```
+
+## URN
+
+Since expresso is an opinionated framework, **you must use an URN** in the format `urn:type:description` for the subject private claim in the JWT
+
+### Types
+
+The middleware can check if a subject is from a determined type by using the `types('type')` middleware. It'll parse the URN and check if the types are matching, if not, the user will not be authorized.
 
 ### Options
 

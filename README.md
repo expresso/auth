@@ -10,7 +10,7 @@
     - [Options](#options)
     - [Scopes](#scopes)
       - [Conditionals](#conditionals)
-  - [URN[(#urn)
+  - [URN](#urn)
     - [Types](#types)
 
 ## Basic Usage

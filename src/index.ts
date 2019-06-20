@@ -35,7 +35,7 @@ function getJwtSecret (options: IAuthConfig) {
  * @param options.jwt.secret - JWT secret
  */
 export function factory (options: IAuthConfig) {
-  const { jwt: { audience, issuer, algorithms = [ 'RS256' ] } } = options
+  const { requireUrn = true, jwt: { audience, issuer, algorithms = [ 'RS256' ] } } = options
   const secret = getJwtSecret(options)
 
   const jwt = [
@@ -49,6 +49,15 @@ export function factory (options: IAuthConfig) {
      */
     (req: Request, _res: Response, next: NextFunction) => {
       const { scope = '', sub = '' } = { ...(req as any).user }
+
+      if (!requireUrn) {
+        Object.defineProperty(req, 'user', {
+          value: { id: sub, type: null, urn: null, scopes: scope.split(' ') },
+          writable: false
+        })
+
+        return
+      }
 
       if (!URN_REGEX.test(sub)) {
         return next(boom.unauthorized('an unacceptable identity urn was given', undefined, { code: 'invalid_identity_urn' }))

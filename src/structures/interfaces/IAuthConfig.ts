@@ -1,4 +1,5 @@
 export interface IAuthConfig {
+  requireUrn?: boolean,
   jwt: {
     audience: string,
     issuer: string,

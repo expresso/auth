@@ -1,6 +1,6 @@
 {
   "name": "@expresso/auth",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "@expresso's authorization tool",
   "main": "dist/index.js",
   "scripts": {

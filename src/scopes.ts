@@ -50,7 +50,7 @@ export function scopes (expected: OneOrMore<string>, shouldHaveAllScopes = true)
       : expected.some((scope) => isPathInScope(scope, user.scopes)) // Otherwise, checks if some scope is in user scopes
 
     if (!satisfied) {
-      return next(boom.unauthorized(format('the following permissions are required: %s', expected.join(' ')), undefined, { code: 'insufficient_permissions' }))
+      return next(boom.unauthorized(format('the following permissions are required: %s', expected.join(' ')), 'Bearer', { code: 'insufficient_permissions' }))
     }
 
     next()

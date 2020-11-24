@@ -24,7 +24,7 @@ export function types (expected: OneOrMore<string>): RequestHandler {
                                     .includes(req.user.type.toLowerCase())
 
     if (!hasExpectedType) {
-      return next(boom.unauthorized(format('one of the following types is required: %s', expected.join(' ')), undefined, { code: 'invalid_type' }))
+      return next(boom.unauthorized(format('one of the following types is required: %s', expected.join(' ')), 'Bearer', { code: 'invalid_type' }))
     }
 
     next()

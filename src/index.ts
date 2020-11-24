@@ -1,4 +1,4 @@
-import boom from 'boom'
+import boom from '@hapi/boom'
 import { types } from './types'
 import { scopes } from './scopes'
 const jwksRsa = require('jwks-rsa')
@@ -51,7 +51,7 @@ export function factory (options: IAuthConfig) {
       const { scope = '', sub = '' } = { ...(req as any).user }
 
       if (!URN_REGEX.test(sub)) {
-        return next(boom.unauthorized('an unacceptable identity urn was given', undefined, { code: 'invalid_identity_urn' }))
+        return next(boom.unauthorized('an unacceptable identity urn was given', 'Bearer', { code: 'invalid_identity_urn' }))
       }
 
       const urnParts = URN_REGEX.exec(sub)
@@ -61,7 +61,7 @@ export function factory (options: IAuthConfig) {
         : [null, null, null]
 
       if (!urn || !type || !id) {
-        return next(boom.unauthorized('an unacceptable identity urn was given', undefined, { code: 'invalid_identity_urn' }))
+        return next(boom.unauthorized('an unacceptable identity urn was given', 'Bearer', { code: 'invalid_identity_urn' }))
       }
 
       Object.defineProperty(req, 'user', {

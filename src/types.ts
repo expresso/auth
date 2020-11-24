@@ -1,4 +1,4 @@
-import boom from 'boom'
+import boom from '@hapi/boom'
 import { format } from 'util'
 import { OneOrMore } from './structures/types'
 import { RequestHandler, NextFunction, Response } from 'express'

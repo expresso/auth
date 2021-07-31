@@ -48,7 +48,7 @@ export function factory (options: IAuthConfig) {
      * Moes
      */
     (req: Request, _res: Response, next: NextFunction) => {
-      const { scope = '', sub = '' } = { ...(req as any).user }
+      const { scope = '', sub = '', iss = '', aud = '', iat = '', exp = '', ...userDefined } = { ...(req as any).user }
 
       if (!URN_REGEX.test(sub)) {
         return next(boom.unauthorized('an unacceptable identity urn was given', 'Bearer', { code: 'invalid_identity_urn' }))
@@ -65,7 +65,7 @@ export function factory (options: IAuthConfig) {
       }
 
       Object.defineProperty(req, 'user', {
-        value: { id, type, urn, scopes: scope.split(' ') },
+        value: { id, type, urn, scopes: scope.split(' '), customProperties: userDefined },
         writable: false
       })
 

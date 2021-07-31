@@ -5,6 +5,7 @@ export interface IAuthenticatedRequest extends Request {
     id: string,
     type: string,
     urn: string,
-    scopes: string[]
+    scopes: string[],
+    customProperties: Record<string, any>
   }
 }

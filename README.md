@@ -112,3 +112,7 @@ app.get('/', scopes.and(['users.read', 'admin.write']), routeHandler)
 ```
 
 Will return `true` if both the `users.read` **and** `admin.write` is present in the `scope` public claim.
+
+#### User-defined properties
+
+If you return any other properties that are not in the original JWT spec (like, an email or any other). Auth will put them into `customProperties` in the `req.user` object. Therefore you can access your defined properties as `req.user.customProperties.yourProperty`.

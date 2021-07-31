@@ -12,6 +12,7 @@
       - [Conditionals](#conditionals)
   - [URN](#urn)
     - [Types](#types)
+  - [User-defined properties](#user-defined-properties)
 
 ## Basic Usage
 
